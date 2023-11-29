@@ -106,7 +106,7 @@ namespace BookingSystem.Controllers
             try
             {
                 var result = await _bookingService.AddToWaitlistAsync(model);
-                RecurringJob.AddOrUpdate(() => _bookingService.CheckAndRefundWaitlistUsers(), Cron.Minutely);
+                RecurringJob.AddOrUpdate(() => _bookingService.CheckAndRefundWaitlistUsers(), Cron.MinuteInterval(6));
                 return Ok(new { status = true, message = "Added to waitlist successfully." });
             }
             catch (ApplicationException ex)

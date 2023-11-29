@@ -138,9 +138,9 @@ namespace BookingSystem.Services
             return true;
         }
 
-        public async Task<User?> GetUserProfileAsync(int userID)
+        public async Task<User?> GetUserProfileAsync(string email)
         {
-            var userObj = await _context.Users.Include(x => x.UserPackages).AsNoTracking().Where(x => x.UserID == userID).SingleOrDefaultAsync();
+            var userObj = await _context.Users.Include(x => x.UserPackages).AsNoTracking().Where(x => x.Email == email).FirstOrDefaultAsync();
             if(userObj == null || !userObj.IsEmailVerified) return null;
             return userObj;
         }

@@ -69,10 +69,10 @@ namespace BookingSystem.Controllers
          
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Authorize]
-        [HttpGet("profile")]
-        public async Task<IActionResult> Profile(int userID)
+        [HttpGet("profile/{email}")]
+        public async Task<IActionResult> Profile(string email)
         {
-            var user = await _userService.GetUserProfileAsync(userID);
+            var user = await _userService.GetUserProfileAsync(email);
             if (user == null)
                 return NotFound();
             return Ok(new { status = true, message = "success", data = user });

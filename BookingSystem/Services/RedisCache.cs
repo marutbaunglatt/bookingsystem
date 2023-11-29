@@ -6,10 +6,12 @@ namespace BookingSystem1.Services
     public class RedisCache : IRedisCache
     {
         private IDatabase _cacheDb;
+        private readonly IConfiguration _configuration;
 
-        public RedisCache()
+        public RedisCache(IConfiguration configuration)
         {
-            var redis = ConnectionMultiplexer.Connect("localhost:6379");
+            _configuration = configuration;
+            var redis = ConnectionMultiplexer.Connect(_configuration["Redis:api_url"]);
             _cacheDb = redis.GetDatabase();
         }
 
