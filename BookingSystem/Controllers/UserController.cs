@@ -121,6 +121,6 @@ namespace BookingSystem.Controllers
             {
                 return BadRequest(new { status = false, message = ex.Message });
             }
-
+        }
     }
 }
