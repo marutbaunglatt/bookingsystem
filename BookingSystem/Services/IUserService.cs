@@ -16,5 +16,7 @@ namespace BookingSystem.Services
         Task<bool> VerifyEmail(string email);
 
         Task<User?> GetUserProfileAsync(int userID);
+        Task<bool> CheckPasswordAsync(ChangePasswordDto model);
+        Task<bool> ResetPasswordAsync(ResetPasswordDto model);
     }
 }

@@ -4,6 +4,7 @@ using BookingSystem.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -67,8 +68,8 @@ namespace BookingSystem.Controllers
         }
          
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        [HttpGet("profile")]
         [Authorize]
+        [HttpGet("profile")]
         public async Task<IActionResult> Profile(int userID)
         {
             var user = await _userService.GetUserProfileAsync(userID);
@@ -77,6 +78,49 @@ namespace BookingSystem.Controllers
             return Ok(new { status = true, message = "success", data = user });
         }
 
+        [Authorize]
+        [HttpPost("changepassword")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(new { status = false, message = ModelState });
+                }
+
+                // Verify the current password
+                var res = await _userService.CheckPasswordAsync(model);
+
+                return Ok(new { status = false, message = "Password changed successfully" });
+            }catch (Exception ex)
+            {
+                return BadRequest(new { status = false, message = ex.Message });
+            }
+           
+        }
+
+        [Authorize]
+        [HttpPost("resetpassword")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto model)
+        {
+
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(new { status = false, message = ModelState });
+                }
+
+                // Verify the current password
+                var res = await _userService.ResetPasswordAsync(model);
+
+                return Ok(new { status = false, message = "Password reset successfully" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { status = false, message = ex.Message });
+            }
 
     }
 }
