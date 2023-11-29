@@ -28,7 +28,7 @@ builder.Services.AddSwaggerGen(options =>
     options.SwaggerDoc(
     "v1", new OpenApiInfo
     {
-        Title = "PPMS API",
+        Title = "Booking System API",
         Version = "v1"
     });
     // add JWT Authentication
@@ -62,32 +62,6 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
-//builder.Services.AddSwaggerGen(c =>
-//{
-//    c.SwaggerDoc("v1", new OpenApiInfo { Title = "BookingSystem", Version = "v1" });
-
-//    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-//    {
-//        Description = "JWT Authorization header using the Bearer scheme",
-//        Type = SecuritySchemeType.Http,
-//        Scheme = "bearer"
-//    });
-
-//    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-//    {
-//        {
-//            new OpenApiSecurityScheme
-//            {
-//                Reference = new OpenApiReference
-//                {
-//                    Type = ReferenceType.SecurityScheme,
-//                    Id = "Bearer"
-//                }
-//            },
-//            Array.Empty<string>()
-//        }
-//    });
-//});
 builder.Services.AddHangfire(configuration => configuration
         .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
         .UseSimpleAssemblyNameTypeSerializer()
