@@ -144,5 +144,34 @@ namespace BookingSystem.Services
             if(userObj == null || !userObj.IsEmailVerified) return null;
             return userObj;
         }
+
+        public async Task<bool> CheckPasswordAsync(ChangePasswordDto model)
+        {
+            var user = await _context.Users.FindAsync(model.UserId);
+            if (user == null) throw new ApplicationException("User not found.");
+            bool isPasswordCorrect = BCrypt.Net.BCrypt.Verify(model.CurrentPassword, user.Password);
+            if (!isPasswordCorrect) throw new ApplicationException("Incorrect old password.");
+            user.Password = HashPassword(model.NewPassword);
+
+            _context.Users.Attach(user);
+            _context.Entry(user).State = EntityState.Modified;
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> ResetPasswordAsync(ResetPasswordDto model)
+        {
+            var user = await _context.Users.Where(x => x.Email == model.Email).FirstOrDefaultAsync();
+            if (user == null) throw new ApplicationException("User not found.");
+            user.Password = HashPassword(model.NewPassword);
+
+            _context.Users.Attach(user);
+            _context.Entry(user).State = EntityState.Modified;
+
+            await _context.SaveChangesAsync();
+            return true;
+
+        }
     }
 }
